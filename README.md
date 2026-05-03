@@ -1,6 +1,6 @@
-# 📟 RAG Chat Terminal v1.0
+# 🤖 RAG Chat Terminal v1.0
 
-A browser-based LLM chat application with **built-in RAG (Retrieval-Augmented Generation)**. Run AI models and query your PDFs directly in your browser using WebGPU technology, all within a **retro CRT terminal interface**.
+A modern, browser-based LLM chat application with **built-in RAG (Retrieval-Augmented Generation)**. Run AI models and query your PDFs directly in your browser using WebGPU technology, all within a sleek, clean, and functional interface.
 
 All processing happens locally on your device. No server required. No data leaves your machine. 💯% Offline.
 
@@ -11,9 +11,10 @@ All processing happens locally on your device. No server required. No data leave
 ## ✅ Features
 
 - 📂 **Local PDF RAG**: Upload a PDF and ask questions about its content. The app extracts text, generates embeddings (using Transformers.js), and retrieves context locally to ground the AI's answers.
-- 📟 **Retro Terminal UI**: A nostalgic 90s-style desktop environment with CRT scanlines, flicker effects, and a classic 3D-border aesthetic.
+- 🧩 **Semantic Chunking**: Extracts PDF text using spatial data (X/Y coordinates) to rebuild lines and detect paragraphs, maintaining the structure of tables, lists, and semantic blocks for better RAG context.
+- 💻 **Modern Functional UI**: A clean, distraction-free interface with a dedicated sidebar for configuration and a wide chat area.
 - 🤖 **Offline LLMs**: Run large language models directly in your browser via WebGPU.
-- 🔄 **Model Choice**: Select from various models with different performance/memory profiles.
+- 🔄 **Explicit Model Loading**: Select a model and explicitly load it. Models don't auto-download unexpectedly, saving your bandwidth and system resources.
 - 📊 **Progress Tracking**: Real-time feedback for model downloads and PDF embedding.
 - 💾 **Local Persistence**: Conversation history and model metadata are saved to your browser's IndexedDB.
 
