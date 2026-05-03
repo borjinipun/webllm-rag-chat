@@ -2,8 +2,7 @@
  * PDF Processor — Extracts and chunks text from PDF files.
  *
  * PDF.js is loaded as a UMD <script> tag in index.html, which sets
- * window.pdfjsLib. We use that global directly to avoid dynamic-import
- * CORS/CDN issues with .mjs files.
+ * window.pdfjsLib. We use that global directly.
  */
 
 const PDFJS_WORKER_CDN =
@@ -12,35 +11,41 @@ const PDFJS_WORKER_CDN =
 const CHUNK_SIZE = 500   // characters per chunk
 const CHUNK_OVERLAP = 100 // overlap between consecutive chunks
 
+let workerBlobUrl = null
+
 /**
- * Get the pdfjsLib global set by the UMD script tag.
- * Throws a clear error if the script hasn't loaded yet.
- * @returns {Object} pdfjsLib
+ * Get the pdfjsLib global and ensure the worker is initialized.
+ * Uses a Blob URL to avoid cross-origin worker loading issues on GitHub Pages.
  */
-const getPdfJs = () => {
+const getPdfJs = async () => {
   const lib = window.pdfjsLib
   if (!lib) {
     throw new Error(
-      'PDF.js has not loaded yet. Make sure the <script src="pdf.min.js"> ' +
-        'tag is present in index.html before the main module.',
+      'PDF.js has not loaded yet. Make sure the <script> tag is in index.html.',
     )
   }
-  // Set the worker source once
+
   if (!lib.GlobalWorkerOptions.workerSrc) {
-    lib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_CDN
+    try {
+      // Fetch the worker script and create a Blob URL to bypass cross-origin restrictions
+      const response = await fetch(PDFJS_WORKER_CDN)
+      const blob = await response.blob()
+      workerBlobUrl = URL.createObjectURL(blob)
+      lib.GlobalWorkerOptions.workerSrc = workerBlobUrl
+    } catch (err) {
+      console.error('Failed to create PDF.js worker blob:', err)
+      // Fallback to the CDN URL directly (might fail on some browsers due to CORS)
+      lib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_CDN
+    }
   }
   return lib
 }
 
 /**
- * Extract full text from a PDF File object, page by page.
- *
- * @param {File} file - The PDF file
- * @param {Function} onProgress - Called with 0-50 during extraction
- * @returns {Promise<{text: string, pageTexts: string[], totalPages: number}>}
+ * Extract full text from a PDF File object.
  */
 export const extractTextFromPDF = async (file, onProgress = () => {}) => {
-  const pdfjs = getPdfJs()
+  const pdfjs = await getPdfJs()
 
   const arrayBuffer = await file.arrayBuffer()
   const loadingTask = pdfjs.getDocument({ data: arrayBuffer })
@@ -68,12 +73,6 @@ export const extractTextFromPDF = async (file, onProgress = () => {}) => {
 
 /**
  * Split page texts into overlapping fixed-size chunks.
- * Each chunk records the originating page number (1-indexed).
- *
- * @param {string[]} pageTexts
- * @param {number} chunkSize
- * @param {number} overlap
- * @returns {{text: string, pageNumber: number}[]}
  */
 export const chunkText = (
   pageTexts,
