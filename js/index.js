@@ -1,12 +1,10 @@
 /**
- * Main entry point for the WebLLM Chat application
+ * Main entry point for the RAG Chat Terminal application
  */
 import app from './app.js'
-import { initpcUI } from './utils/pc-ui.js'
 
-// Initialize the app and pc UI
+// Initialize the app
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('WebLLM Chat application - pc Edition Initializing...')
+  console.log('RAG Chat Terminal Initializing...')
   // app.init() is already called within app.js upon DOMContentLoaded
-  // initpcUI(); // This will be called by its own DOMContentLoaded listener
 })

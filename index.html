@@ -8,262 +8,175 @@
       name="description"
       content="Chat with local LLMs and query your PDFs — running entirely in your browser, offline."
     />
-    <!-- Open Graph -->
     <meta property="og:title" content="RAG Chat Terminal v1.0" />
     <meta
       property="og:description"
       content="Offline AI chat with PDF RAG, powered by WebLLM — no server required."
     />
     <meta property="og:type" content="website" />
-    <link rel="stylesheet" href="css/pc-theme.css" />
+    
+    <!-- Modern Fonts and CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/icons.css" />
-    <link rel="stylesheet" href="css/retro.css" />
+    <link rel="stylesheet" href="css/styles.css" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <style>
-      /* start menu info rows — defined here since they're new elements */
-      .start-menu-info { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
-      .start-info-row { display: flex; align-items: center; gap: 8px; padding: 5px 8px; font-size: 16px; color: #000; border-bottom: 1px dotted #808080; cursor: default; }
-      .start-info-row:hover { background: #000080; color: #fff; }
-      .start-info-row:hover .icon { filter: brightness(0) invert(1); }
-      .start-info-row .icon { width: 16px; height: 16px; flex-shrink: 0; }
-      .retro-avatar { width: 38px; height: 38px; background: #000080; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; flex-shrink: 0; }
-    </style>
   </head>
   <body>
-    <div class="pc-desktop">
-      <!-- Start Menu -->
-      <div class="start-menu" id="startMenu">
-        <div class="start-menu-header">
+    <div class="app-container">
+      
+      <!-- ── Sidebar (Settings & RAG) ── -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
           <h2>RAG Chat Terminal</h2>
+          <span class="badge">Offline</span>
         </div>
 
-        <div class="start-menu-info">
-          <div class="start-info-row">
-            <span class="icon icon-app-chat"></span>
-            <span>Offline LLM chat via WebLLM + WebGPU</span>
-          </div>
-          <div class="start-info-row">
-            <span class="icon icon-pdf"></span>
-            <span>PDF Q&amp;A via in-browser RAG</span>
-          </div>
-          <div class="start-info-row">
-            <span class="icon icon-memory"></span>
-            <span>All processing stays on your device</span>
-          </div>
-          <div class="start-info-row">
-            <span class="icon icon-debug"></span>
-            <span>No internet required after first load</span>
-          </div>
-        </div>
-
-        <div class="start-menu-footer">
-          <div class="user-avatar retro-avatar">
-            <span>AI</span>
-          </div>
-          <div class="user-info">
-            <div class="user-name">Local AI Terminal</div>
-            <div class="user-status">Online</div>
-          </div>
-          <button class="power-button" title="Power">
-            <span class="icon icon-power"></span>
-          </button>
-        </div>
-      </div>
-
-      <!-- App Window for the Chat Application -->
-      <div class="app-window" id="webLlmAppWindow">
-        <div class="app-window-titlebar" id="appWindowTitlebar">
-          <div class="app-window-titlebar-title">
-            <span class="icon icon-app-chat"></span>
-            <span>RAG Chat Terminal v1.0</span>
-          </div>
-          <div class="app-window-controls">
-            <button class="minimize-button" title="Minimize">
-              <span class="icon icon-minimize"></span>
-            </button>
-            <button class="maximize-button" title="Maximize">
-              <span class="icon icon-maximize"></span>
-            </button>
-            <button class="close-button" title="Close">
-              <span class="icon icon-close"></span>
-            </button>
-          </div>
-        </div>
-        <div class="app-window-content">
-          <!-- Main column - chat interface -->
-          <div class="main-column">
-            <h1>
-              <span class="icon icon-app-chat"></span>RAG Chat Terminal
-            </h1>
+        <!-- Model Configuration -->
+        <div class="sidebar-section">
+          <h3>Model Configuration</h3>
+          <div class="model-select-wrapper">
             <select id="model-select"></select>
+          </div>
+          
+          <button id="load-model-button" class="primary-button">
+            <span class="icon icon-download"></span> Load Model
+          </button>
 
-            <div id="model-info" class="model-info" style="display: none">
-              <div class="model-details">
-                <div class="model-detail">
-                  <span class="icon icon-download"></span>
-                  <span class="model-detail-label">Download Size:</span>
-                  <span id="model-download-size" class="model-detail-value"
-                    >--</span
-                  >
-                </div>
-                <div class="model-detail">
-                  <span class="icon icon-memory"></span>
-                  <span class="model-detail-label">VRAM Required:</span>
-                  <span id="model-vram" class="model-detail-value">--</span>
-                </div>
-                <div class="model-detail">
-                  <span class="icon icon-parameter"></span>
-                  <span class="model-detail-label">Parameters:</span>
-                  <span id="model-params" class="model-detail-value">--</span>
-                </div>
-              </div>
+          <div id="model-info" class="model-info" style="display: none">
+            <div class="model-detail">
+              <span class="label">Size:</span>
+              <span id="model-download-size" class="value">--</span>
             </div>
-
-            <div
-              id="resource-warning"
-              class="resource-warning"
-              style="display: none"
-            >
-              <span class="icon icon-warning"></span>
-              <div class="content">
-                <strong>Note:</strong> Large models require significant GPU
-                resources. If your device has limited capabilities, consider
-                using smaller models.
-              </div>
-              <button
-                class="dismiss-btn"
-                id="dismiss-warning"
-                aria-label="Dismiss"
-              >
-                ×
-              </button>
+            <div class="model-detail">
+              <span class="label">VRAM:</span>
+              <span id="model-vram" class="value">--</span>
             </div>
-
-            <div id="top-status-container" class="top-status-container">
-              <div id="top-status" class="top-status"></div>
-              <div id="progress-container" style="display: none">
-                <div class="progress-bar">
-                  <div id="progress-fill" class="progress-fill"></div>
-                </div>
-                <div id="progress-text" class="progress-text">0%</div>
-              </div>
-            </div>
-
-            <!-- RAG active mode indicator -->
-            <div id="ragActiveIndicator" class="rag-active-indicator" style="display: none; margin-bottom: 12px;">
-              <span class="icon icon-rag-check"></span>
-              <span id="ragActiveText">PDF Q&amp;A Active — answers grounded in your document</span>
-            </div>
-
-            <div id="output">Initializing AI assistant...</div>
-            <form id="chat-form">
-              <input
-                id="prompt"
-                placeholder="Type your message here..."
-                disabled
-              />
-              <button id="submit-button" type="submit" disabled>
-                <span class="icon icon-send"></span>Send
-              </button>
-            </form>
-
-            <div class="button-container">
-              <button
-                id="clear-chat"
-                class="secondary-button"
-                title="Clear conversation history"
-              >
-                <span class="icon icon-clear"></span>Clear Chat
-              </button>
+            <div class="model-detail">
+              <span class="label">Params:</span>
+              <span id="model-params" class="value">--</span>
             </div>
           </div>
 
-          <!-- Sidebar column - RAG panel + status and debug logs -->
-          <div class="sidebar-column">
-
-            <!-- ── RAG PDF Document Panel ── -->
-            <div class="rag-panel" id="ragPanel">
-              <h3><span class="icon icon-pdf"></span>PDF Document</h3>
-
-              <!-- Drop zone (shown when no PDF is loaded) -->
-              <div class="pdf-dropzone" id="pdfDropzone">
-                <span class="icon icon-upload-doc"></span>
-                <span>Drop a PDF here</span>
-                <label for="pdfFileInput" class="pdf-upload-label">Browse…</label>
-                <input type="file" id="pdfFileInput" accept=".pdf" hidden />
+          <div id="resource-warning" class="resource-warning" style="display: none">
+            <span class="icon icon-warning"></span>
+            <div class="content">Large models require significant GPU resources.</div>
+            <button class="dismiss-btn" id="dismiss-warning" aria-label="Dismiss">×</button>
+          </div>
+          
+          <div id="status-container" class="status-container" style="display: none;">
+            <div id="status" class="status-text"></div>
+            <div id="status-progress-container" class="progress-wrapper" style="display: none">
+              <div class="progress-bar">
+                <div id="status-progress-fill" class="progress-fill"></div>
               </div>
-
-              <!-- PDF badge (shown once a PDF is loaded) -->
-              <div class="pdf-badge" id="pdfBadge" style="display: none">
-                <span class="icon icon-pdf"></span>
-                <span class="pdf-badge-name" id="pdfFileName">document.pdf</span>
-                <button class="pdf-remove-btn" id="removePdfBtn" title="Remove PDF">×</button>
-              </div>
-
-              <!-- Processing / embedding progress -->
-              <div class="rag-progress-wrapper" id="ragProgressWrapper" style="display: none">
-                <div class="rag-progress-label" id="ragProgressLabel">Processing…</div>
-                <div class="progress-bar">
-                  <div class="progress-fill" id="ragProgressFill" style="width: 0%"></div>
-                </div>
-              </div>
-
-              <!-- Chat / PDF Q&A mode toggle (shown after PDF is indexed) -->
-              <div class="rag-mode-toggle" id="ragModeToggle" style="display: none">
-                <button class="rag-toggle-btn active" id="chatModeBtn">
-                  <span class="icon icon-app-chat"></span> Chat
-                </button>
-                <button class="rag-toggle-btn" id="pdfModeBtn">
-                  <span class="icon icon-pdf"></span> PDF Q&amp;A
-                </button>
-              </div>
+              <div id="status-progress-text" class="progress-text">0%</div>
             </div>
-            <!-- ── End RAG Panel ── -->
-
-            <h3><span class="icon icon-status"></span>Status Panel</h3>
-            <!-- Copy of the progress display from main window -->
-            <div id="status-container" class="top-status-container">
-              <div id="status" class="top-status"></div>
-              <div id="status-progress-container" style="display: none">
-                <div class="progress-bar">
-                  <div id="status-progress-fill" class="progress-fill"></div>
-                </div>
-                <div id="status-progress-text" class="progress-text">0%</div>
-              </div>
-            </div>
-            <h3><span class="icon icon-debug"></span>Debug Log</h3>
-            <div id="debug"></div>
           </div>
         </div>
-      </div>
-      <!-- End App Window -->
-      <!-- Log Window placeholder - will be dynamically managed -->
-    </div>
 
-    <div class="pc-taskbar">
-      <button class="taskbar-start-button">
-        <span class="icon icon-pc"></span> Start
-      </button>
-      <button
-        class="taskbar-app-icon active"
-        id="taskbarWebLlmApp"
-        title="RAG Chat Terminal"
-      >
-        <span class="icon icon-app-chat"></span>
-      </button>
-      <button class="taskbar-app-icon" id="taskbarLogButton" title="Show Log">
-        <span class="icon icon-terminal"></span>
-      </button>
-      <div class="taskbar-clock" id="taskbarClock">12:00 PM</div>
+        <!-- RAG PDF Panel -->
+        <div class="sidebar-section rag-panel" id="ragPanel">
+          <h3>Knowledge Base (PDF)</h3>
+
+          <div class="pdf-dropzone" id="pdfDropzone">
+            <span class="icon icon-upload-doc"></span>
+            <span>Drop a PDF here to ground answers</span>
+            <label for="pdfFileInput" class="pdf-upload-label">Browse Files</label>
+            <input type="file" id="pdfFileInput" accept=".pdf" hidden />
+          </div>
+
+          <div class="pdf-badge" id="pdfBadge" style="display: none">
+            <span class="icon icon-pdf"></span>
+            <span class="pdf-badge-name" id="pdfFileName">document.pdf</span>
+            <button class="pdf-remove-btn" id="removePdfBtn" title="Remove PDF">×</button>
+          </div>
+
+          <div class="rag-progress-wrapper" id="ragProgressWrapper" style="display: none">
+            <div class="rag-progress-label" id="ragProgressLabel">Processing…</div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="ragProgressFill" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="rag-mode-toggle" id="ragModeToggle" style="display: none">
+            <button class="rag-toggle-btn active" id="chatModeBtn">
+              <span class="icon icon-app-chat"></span> Chat
+            </button>
+            <button class="rag-toggle-btn" id="pdfModeBtn">
+              <span class="icon icon-pdf"></span> PDF Q&amp;A
+            </button>
+          </div>
+        </div>
+        
+        <!-- Controls & Debug -->
+        <div class="sidebar-footer">
+          <button id="clear-chat" class="secondary-button">
+            <span class="icon icon-clear"></span> Clear Chat History
+          </button>
+          
+          <details class="debug-details">
+            <summary>Debug Logs</summary>
+            <div id="debug" class="debug-log"></div>
+          </details>
+        </div>
+      </aside>
+
+      <!-- ── Main Chat Area ── -->
+      <main class="main-content">
+        
+        <header class="chat-header">
+          <div id="top-status-container" class="top-status-container">
+            <div id="top-status" class="top-status">System initialized. Waiting for model...</div>
+            <div id="progress-container" class="progress-wrapper" style="display: none">
+              <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+              </div>
+              <div id="progress-text" class="progress-text">0%</div>
+            </div>
+          </div>
+
+          <div id="ragActiveIndicator" class="rag-active-indicator" style="display: none;">
+            <span class="icon icon-rag-check"></span>
+            <span id="ragActiveText">PDF Q&amp;A Active — answers grounded in your document</span>
+          </div>
+        </header>
+
+        <div class="chat-history" id="output">
+          <div class="welcome-message">
+            <h3>Welcome to RAG Chat Terminal</h3>
+            <p>Please select a model from the sidebar and click "Load Model" to begin.</p>
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <form id="chat-form" class="chat-form">
+            <input
+              id="prompt"
+              type="text"
+              placeholder="Load a model to start chatting..."
+              disabled
+              autocomplete="off"
+            />
+            <button id="submit-button" type="submit" class="submit-button" disabled>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+      </main>
     </div>
 
     <!-- Dexie.js for IndexedDB operations -->
     <script src="https://unpkg.com/dexie@3.2.4/dist/dexie.js"></script>
 
-    <!-- PDF.js (UMD build — sets window.pdfjsLib, no dynamic import needed) -->
+    <!-- PDF.js (UMD build) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
-    <!-- Load the modular JavaScript -->
+    <!-- Application Script -->
     <script type="module" src="js/index.js"></script>
   </body>
 </html>

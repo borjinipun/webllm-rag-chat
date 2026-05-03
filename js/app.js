@@ -49,7 +49,7 @@ class App {
   }
 
   /**
-   * Try to load the last used model from database
+   * Try to set the last used model from database (without loading it)
    */
   async tryLoadLastUsedModel() {
     try {
@@ -57,11 +57,7 @@ class App {
       const modelSelect = this.elements.modelSelect
 
       if (lastModel && lastModel.modelId) {
-        logStatus(
-          `Found previously used model: loading ${lastModel.modelId}...`,
-          true,
-        )
-        logDebug(`Auto-loading model: ${lastModel.modelId}`)
+        logDebug(`Pre-selecting previous model: ${lastModel.modelId}`)
 
         // Set the model dropdown to the last used model
         for (let i = 0; i < modelSelect.options.length; i++) {
@@ -71,11 +67,8 @@ class App {
             break
           }
         }
-
-        // Load the model automatically
-        await this.loadSelectedModel()
       } else {
-        logDebug('No previous model found in database, loading default model')
+        logDebug('No previous model found in database, setting default model')
 
         // Set Qwen 2.5 1.5B as the default model
         const defaultModelId = 'Qwen2.5-1.5B-Instruct-q4f32_1-MLC'
@@ -85,19 +78,12 @@ class App {
           if (modelSelect.options[i].value === defaultModelId) {
             modelSelect.selectedIndex = i
             this.updateResourceWarning()
-            logStatus(
-              `Loading default model: ${modelSelect.options[i].textContent}...`,
-              true,
-            )
             break
           }
         }
-
-        // Load the default model
-        await this.loadSelectedModel()
       }
     } catch (error) {
-      logDebug(`Error loading model: ${error.message}`)
+      logDebug(`Error selecting model: ${error.message}`)
     }
   }
 
@@ -173,7 +159,8 @@ class App {
       this.elements[key] = document.getElementById(ELEMENT_IDS[key])
     })
 
-    // Add reference to dismiss button
+    // Add reference to load and dismiss buttons
+    this.elements.loadModelButton = document.getElementById('load-model-button')
     this.elements.dismissWarningButton =
       document.getElementById('dismiss-warning')
 
@@ -220,11 +207,19 @@ class App {
       this.handleFormSubmit.bind(this),
     )
 
-    // Model select change
+    // Model select change (only updates UI, doesn't load)
     this.elements.modelSelect.addEventListener(
       'change',
       this.handleModelSelectChange.bind(this),
     )
+
+    // Load model button
+    if (this.elements.loadModelButton) {
+      this.elements.loadModelButton.addEventListener(
+        'click',
+        this.loadSelectedModel.bind(this),
+      )
+    }
 
     // Clear chat button
     if (this.elements.clearChatButton) {
@@ -287,14 +282,11 @@ class App {
   }
 
   /**
-   * Handle model selection change
+   * Handle model selection change (updates warning only)
    */
   async handleModelSelectChange() {
     // Update resource warning
     this.updateResourceWarning()
-
-    // Load the selected model
-    await this.loadSelectedModel()
   }
 
   /**
