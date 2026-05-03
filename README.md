@@ -1,78 +1,52 @@
-# 🖥️ 🤖 WebLLM Offline AI Assistant
+# 📟 RAG Chat Terminal v1.0
 
-This is a browser-based LLM chat application that runs AI models directly in your browser using WebGPU technology, presented with a **pc-themed desktop interface**.
-All processing happens locally on your device. No server required. ✨
+A browser-based LLM chat application with **built-in RAG (Retrieval-Augmented Generation)**. Run AI models and query your PDFs directly in your browser using WebGPU technology, all within a **retro CRT terminal interface**.
+
+All processing happens locally on your device. No server required. No data leaves your machine. 💯% Offline.
 
 ## 🌟 Live URL
 
-🔗 Use the app at [https://chat.ebenezerdon.com](https://chat.ebenezerdon.com)
+🔗 Use the app at [https://borjinipun.github.io/webllm-rag-chat/](https://borjinipun.github.io/webllm-rag-chat/)
 
 ## ✅ Features
 
-- 🖥️ **PC Desktop Experience**: Interact with the chat app in a simulated pc environment, complete with a taskbar, draggable window, and window controls (minimize, maximize, close).
-- 🤖 **Run large language models** directly in your browser.
-- 🔄 **Choice of models** with different sizes and capabilities.
-- 📊 **Progress tracking** for model downloads and progress bar.
-- ℹ️ **Model information** (download size, VRAM requirements, parameters).
-- 📱 **Responsive design** that adapts.
-- 💬 Clear feedback during download and inference, integrated into the pc UI.
-- 🎛️ Taskbar with a start button, app icon, and live clock.
+- 📂 **Local PDF RAG**: Upload a PDF and ask questions about its content. The app extracts text, generates embeddings (using Transformers.js), and retrieves context locally to ground the AI's answers.
+- 📟 **Retro Terminal UI**: A nostalgic 90s-style desktop environment with CRT scanlines, flicker effects, and a classic 3D-border aesthetic.
+- 🤖 **Offline LLMs**: Run large language models directly in your browser via WebGPU.
+- 🔄 **Model Choice**: Select from various models with different performance/memory profiles.
+- 📊 **Progress Tracking**: Real-time feedback for model downloads and PDF embedding.
+- 💾 **Local Persistence**: Conversation history and model metadata are saved to your browser's IndexedDB.
 
 ## 🔧 Requirements
 
 - **Browser Support**: Chrome 113+, Edge 113+, or Firefox 118+ with WebGPU enabled.
-- **Hardware**: Models work best with a dedicated GPU.
-  - 🟢 Small models: ~1GB VRAM (runs on most devices)
-  - 🟠 Medium models: ~6GB VRAM (dedicated GPU recommended)
-  - 🟣 Large models: 10GB+ VRAM (high-end GPU required)
-
-## 📁 Project Structure
-
-```
-webllm-chat/
-├── index.html              # Main HTML file with pc desktop structure
-├── css/
-│   ├── pc-theme.css   # Core CSS for the pc desktop theme and app window
-│   └── icons.css           # SVG icons for the pc theme
-├── js/
-│   ├── index.js            # Main JavaScript entry point
-│   ├── app.js              # Core application logic for WebLLM chat
-│   ├── config.js           # Model configurations and constants
-│   ├── models/
-│   │   └── llm-model.js    # Handles LLM operations via WebLLM
-│   └── utils/
-│       ├── logger.js       # Logging utilities
-│       ├── ui.js           # UI helper functions (model select, progress, etc.)
-│       ├── db.js           # IndexedDB utilities for caching and preferences
-│       └── pc-ui.js   # Manages pc desktop UI interactions (dragging, controls, taskbar)
-├── favicon.svg             # pc-themed favicon
-└── README.md               # This file
-```
-
-## 🚀 Development
-
-To run the application locally:
-
-1. Clone this repository.
-2. Open `index.html` in a WebGPU-enabled browser.
-3. The chat application will appear as a window on the simulated desktop.
-4. Select a model from the dropdown within the app window and click "Load Model" (or allow auto-load).
+- **Hardware**: Best performance with a dedicated GPU.
+  - 🟢 Small models: ~1GB VRAM
+  - 🟠 Medium models: ~6GB VRAM
+  - 🟣 Large models: 10GB+ VRAM
 
 ## ⚙️ How It Works
 
-This application uses [web-llm](https://github.com/mlc-ai/web-llm), a project that compiles LLMs to WebGPU for browser execution. The UI is structured as a pc desktop environment. When you load a model, it downloads the model weights (which may take some time). Subsequent loads use the cached version from IndexedDB.
-The `pc-ui.js` script handles the visual aspects of the windowing (dragging, minimize, maximize, close simulation) and the taskbar.
+This application is built on top of [web-llm](https://github.com/mlc-ai/web-llm), which compiles LLMs to WebGPU for browser execution. 
 
-## 🔗 Connect With the Developer
+The RAG pipeline uses:
+- **PDF.js**: For client-side text extraction.
+- **Transformers.js**: For running the `Xenova/all-MiniLM-L6-v2` embedding model locally.
+- **Custom Vector Store**: A simple, in-memory cosine-similarity search for retrieving document excerpts.
 
-If you find this project useful, please consider:
+## 🚀 Local Development
 
-- ⭐ Giving this repo a star on GitHub
-- 📺 Checking out my YouTube channel: [youtube.com/ebenezerdon](https://youtube.com/ebenezerdon)
-- 👥 Connecting with me on LinkedIn: [linkedin.com/in/ebenezerdon](https://linkedin.com/in/ebenezerdon)
-- 🐦 Following me on X: [x.com/ebenezerDN](https://x.com/ebenezerDN)
+1. Clone this repository.
+2. Serve the directory using a local HTTP server (required for ES modules):
+   ```bash
+   python3 -m http.server 8080
+   ```
+3. Open `http://localhost:8080` in a WebGPU-enabled browser.
 
-Your support helps me continue creating open-source projects like this one! 🙏
+## 🙏 Credits
+
+- **Core Engine**: Based on [web-llm](https://github.com/mlc-ai/web-llm) by the MLC AI team.
+- **Inspiration**: This project was inspired by the initial work of [Ebenezer Don](https://github.com/ebenezerdon) on the WebLLM desktop interface.
 
 ## 📝 License
 
