@@ -1,0 +1,486 @@
+/* ============================================================
+   RETRO THEME — Windows 95 / CRT Terminal Override
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --retro-gray: #c0c0c0;
+  --retro-dark: #808080;
+  --retro-darker: #404040;
+  --retro-white: #ffffff;
+  --retro-black: #000000;
+  --retro-blue: #000080;
+  --retro-teal: #008080;
+  --retro-title-grad: linear-gradient(to right, #000080, #1084d0);
+  --retro-3d-raise: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff,
+    inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+  --retro-3d-sink: inset -1px -1px #ffffff, inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf, inset 2px 2px #808080;
+  --retro-font-ui: 'VT323', 'Courier New', monospace;
+  --retro-font-mono: 'Share Tech Mono', 'Courier New', monospace;
+  --retro-green: #00ff41;
+  --retro-green-dim: #00b32c;
+  /* Override win11 vars */
+  --win11-font-family: 'VT323', 'Courier New', monospace;
+  --win11-border-radius: 0;
+  --win11-radius-sm: 0;
+  --win11-accent-light: #000080;
+  --win11-accent-dark: #000060;
+  --win11-window-bg: #c0c0c0;
+  --win11-input-bg: #000000;
+  --win11-input-border: #808080;
+  --win11-text-color: #000000;
+  --win11-button-bg: #c0c0c0;
+  --win11-header-color: #000080;
+}
+
+/* ── Scrollbars ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 16px; }
+::-webkit-scrollbar-track { background: #c0c0c0; box-shadow: var(--retro-3d-sink); }
+::-webkit-scrollbar-thumb { background: #c0c0c0; box-shadow: var(--retro-3d-raise); }
+::-webkit-scrollbar-button { background: #c0c0c0; box-shadow: var(--retro-3d-raise); height: 16px; }
+
+/* ── Desktop ────────────────────────────────────────────── */
+body {
+  background: var(--retro-teal) !important;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px,
+      transparent 1px, transparent 6px
+    ) !important;
+  font-family: var(--retro-font-ui) !important;
+}
+
+/* ── Taskbar ────────────────────────────────────────────── */
+.pc-taskbar {
+  height: 28px !important;
+  background: var(--retro-gray) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-top: 2px solid var(--retro-white) !important;
+  justify-content: flex-start !important;
+  padding: 2px 4px !important;
+}
+
+.taskbar-start-button {
+  background: var(--retro-gray) !important;
+  box-shadow: var(--retro-3d-raise) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  height: 22px !important;
+  padding: 0 8px !important;
+  font-family: var(--retro-font-ui) !important;
+  font-size: 15px !important;
+  font-weight: bold !important;
+  color: #000 !important;
+  margin-right: 4px !important;
+}
+.taskbar-start-button:hover { background: var(--retro-gray) !important; }
+.taskbar-start-button:active, .taskbar-start-button.active {
+  box-shadow: var(--retro-3d-sink) !important;
+  background: var(--retro-gray) !important;
+}
+.taskbar-start-button.active::after { display: none !important; }
+
+.taskbar-app-icon {
+  background: var(--retro-gray) !important;
+  box-shadow: var(--retro-3d-raise) !important;
+  border-radius: 0 !important;
+  height: 22px !important;
+  width: auto !important;
+  padding: 0 6px !important;
+}
+.taskbar-app-icon.active { box-shadow: var(--retro-3d-sink) !important; }
+.taskbar-app-icon::after { display: none !important; }
+
+.taskbar-clock {
+  position: absolute !important;
+  right: 4px !important;
+  font-family: var(--retro-font-ui) !important;
+  font-size: 15px !important;
+  color: #000 !important;
+  background: var(--retro-gray) !important;
+  box-shadow: var(--retro-3d-sink) !important;
+  padding: 1px 6px !important;
+  height: 22px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* ── Start Menu ─────────────────────────────────────────── */
+.start-menu {
+  background: var(--retro-gray) !important;
+  backdrop-filter: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: var(--retro-3d-raise) !important;
+  width: 320px !important;
+  bottom: 30px !important;
+  left: 4px !important;
+  transform: translateX(0) translateY(20px) !important;
+}
+.start-menu.active {
+  transform: translateX(0) translateY(0) !important;
+}
+.start-menu-header h2 {
+  font-family: var(--retro-font-ui) !important;
+  font-size: 22px !important;
+  background: var(--retro-title-grad) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+.start-menu-header { margin-bottom: 12px !important; }
+.start-info-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 8px; font-family: var(--retro-font-ui);
+  font-size: 16px; color: #000; border-bottom: 1px dotted #808080;
+}
+.start-info-row:hover { background: var(--retro-blue); color: #fff; }
+.start-menu-footer {
+  border-top: 2px solid #808080 !important;
+  margin-top: 12px !important; padding-top: 10px !important;
+}
+.retro-avatar {
+  width: 38px; height: 38px; border-radius: 0 !important;
+  background: var(--retro-blue); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--retro-font-ui); font-size: 18px; font-weight: bold;
+  box-shadow: var(--retro-3d-raise);
+}
+.user-name { font-family: var(--retro-font-ui) !important; font-size: 16px !important; }
+.user-status { font-family: var(--retro-font-ui) !important; font-size: 14px !important; }
+.power-button { box-shadow: var(--retro-3d-raise) !important; border-radius: 0 !important; }
+
+/* ── App Window ─────────────────────────────────────────── */
+.app-window {
+  background: var(--retro-gray) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: var(--retro-3d-raise) !important;
+}
+.app-window.maximized { border-radius: 0 !important; }
+
+/* ── Titlebar ───────────────────────────────────────────── */
+.app-window-titlebar {
+  background: var(--retro-title-grad) !important;
+  backdrop-filter: none !important;
+  height: 24px !important;
+  padding: 2px 4px !important;
+  border-radius: 0 !important;
+}
+.app-window-titlebar-title {
+  color: #ffffff !important;
+  font-family: var(--retro-font-ui) !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  letter-spacing: 0.5px;
+}
+.app-window-titlebar-title .icon { filter: brightness(0) invert(1); width: 14px !important; height: 14px !important; }
+.app-window-controls button {
+  background: var(--retro-gray) !important;
+  box-shadow: var(--retro-3d-raise) !important;
+  border-radius: 0 !important;
+  width: 18px !important; height: 16px !important;
+  border: none !important; padding: 0 !important;
+  margin-left: 2px !important;
+}
+.app-window-controls button:hover { background: var(--retro-gray) !important; }
+.app-window-controls button:active { box-shadow: var(--retro-3d-sink) !important; }
+.app-window-controls .close-button:hover { background: var(--retro-gray) !important; }
+.app-window-controls .close-button:hover .icon-close { filter: none !important; }
+
+/* ── Layout ─────────────────────────────────────────────── */
+.main-column {
+  background: var(--retro-gray) !important;
+  border-right: 2px solid #808080 !important;
+  padding: 10px !important;
+}
+.sidebar-column {
+  background: #b8b8b8 !important;
+  padding: 10px !important;
+}
+
+/* ── Headings ───────────────────────────────────────────── */
+h1 {
+  font-family: var(--retro-font-ui) !important;
+  font-size: 22px !important;
+  color: var(--retro-blue) !important;
+  border-bottom: 2px solid #808080 !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+}
+h3 {
+  font-family: var(--retro-font-ui) !important;
+  font-size: 16px !important;
+  color: #000 !important;
+  background: var(--retro-title-grad) !important;
+  color: #fff !important;
+  padding: 2px 6px !important;
+  margin-bottom: 8px !important;
+  border-bottom: none !important;
+}
+h3 .icon { filter: brightness(0) invert(1); }
+
+/* ── Model Select ───────────────────────────────────────── */
+select#model-select {
+  background: #fff !important;
+  border: none !important;
+  box-shadow: var(--retro-3d-sink) !important;
+  border-radius: 0 !important;
+  font-family: var(--retro-font-ui) !important;
+  font-size: 15px !important;
+  color: #000 !important;
+  padding: 4px 8px !important;
+}
+
+/* ── Status / Progress ──────────────────────────────────── */
+.top-status-container, #status-container {
+  background: #b0b0b0 !important;
+  border: none !important;
+  box-shadow: var(--retro-3d-sink) !important;
+  border-radius: 0 !important;
+  font-family: var(--retro-font-ui) !important;
+  font-size: 15px !important;
+  padding: 6px 8px !important;
+  color: #000 !important;
+}
+.top-status, #status { color: #000 !important; font-family: var(--retro-font-ui) !important; font-size: 15px !important; }
+.progress-bar {
+  height: 16px !important; border-radius: 0 !important;
+  box-shadow: var(--retro-3d-sink) !important;
+  background: #808080 !important;
+}
+.progress-fill {
+  background: var(--retro-blue) !important;
+  background-image: repeating-linear-gradient(
+    45deg, rgba(255,255,255,0.15) 0px, rgba(255,255,255,0.15) 4px,
+    transparent 4px, transparent 8px) !important;
+  height: 100% !important;
+}
+
+/* ── Chat Output — CRT Terminal ─────────────────────────── */
+#output {
+  background: #0a0a0a !important;
+  color: var(--retro-green) !important;
+  border: none !important;
+  box-shadow: var(--retro-3d-sink) !important;
+  border-radius: 0 !important;
+  font-family: var(--retro-font-mono) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  text-shadow: 0 0 6px rgba(0,255,65,0.5) !important;
+  /* CRT scanlines */
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px,
+    rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+  ) !important;
+}
+
+.user-message {
+  background: rgba(0,0,128,0.3) !important;
+  border-left: 3px solid #5555ff !important;
+  border-radius: 0 !important;
+  color: #aaaaff !important;
+  font-family: var(--retro-font-mono) !important;
+  box-shadow: none !important;
+}
+.assistant-message {
+  background: transparent !important;
+  border-left: 3px solid var(--retro-green-dim) !important;
+  border-radius: 0 !important;
+  color: var(--retro-green) !important;
+  font-family: var(--retro-font-mono) !important;
+  box-shadow: none !important;
+}
+.system-message {
+  background: rgba(0,128,0,0.15) !important;
+  border: 1px dashed var(--retro-green-dim) !important;
+  color: var(--retro-green-dim) !important;
+  border-radius: 0 !important;
+  font-family: var(--retro-font-mono) !important;
+}
+.error-message {
+  background: rgba(128,0,0,0.3) !important;
+  border: 1px solid #ff3333 !important;
+  color: #ff6666 !important;
+  border-radius: 0 !important;
+  font-family: var(--retro-font-mono) !important;
+}
+.role-label {
+  color: var(--retro-green-dim) !important;
+  font-family: var(--retro-font-mono) !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+}
+
+/* Typing dots — green glow */
+.typing-dot { background: var(--retro-green) !important; box-shadow: 0 0 4px var(--retro-green) !important; }
+
+/* ── Input & Buttons ────────────────────────────────────── */
+input#prompt {
+  background: #fff !important;
+  border: none !important;
+  box-shadow: var(--retro-3d-sink) !important;
+  border-radius: 0 !important;
+  font-family: var(--retro-font-ui) !important;
+  font-size: 15px !important;
+  color: #000 !important;
+  padding: 4px 8px !important;
+}
+input#prompt:focus { outline: none !important; box-shadow: var(--retro-3d-sink), 0 0 0 2px #000080 !important; }
+input#prompt:disabled { background: #d0d0d0 !important; color: #808080 !important; }
+input#prompt.pdf-mode { background: #fffff0 !important; }
+input#prompt.pdf-mode::placeholder { color: #000080 !important; opacity: 1 !important; }
+
+button {
+  background: var(--retro-gray) !important;
+  box-shadow: var(--retro-3d-raise) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-family: var(--retro-font-ui) !important;
+  font-size: 15px !important;
+  color: #000 !important;
+  transition: none !important;
+  padding: 4px 12px !important;
+}
+button:hover:not(:disabled) { background: var(--retro-gray) !important; }
+button:active:not(:disabled) { box-shadow: var(--retro-3d-sink) !important; transform: none !important; }
+button:disabled { background: var(--retro-gray) !important; color: #808080 !important; box-shadow: var(--retro-3d-raise) !important; }
+
+button#submit-button {
+  background: var(--retro-gray) !important;
+  border: none !important;
+  color: #000 !important;
+}
+button#submit-button .icon-send { filter: none !important; }
+button#submit-button:hover:not(:disabled) { background: var(--retro-gray) !important; }
+button#submit-button:active:not(:disabled) { box-shadow: var(--retro-3d-sink) !important; }
+
+/* ── Debug Log ──────────────────────────────────────────── */
+#debug {
+  background: #000 !important;
+  color: #00ff41 !important;
+  border: none !important;
+  box-shadow: var(--retro-3d-sink) !important;
+  border-radius: 0 !important;
+  font-family: var(--retro-font-mono) !important;
+  font-size: 11px !important;
+  text-shadow: 0 0 4px rgba(0,255,65,0.4) !important;
+}
+
+/* ── Model Info Panel ───────────────────────────────────── */
+.model-info {
+  background: #b0b0b0 !important;
+  border: none !important;
+  box-shadow: var(--retro-3d-sink) !important;
+  border-radius: 0 !important;
+  font-family: var(--retro-font-ui) !important;
+  font-size: 15px !important;
+}
+.model-detail-label { color: #404040 !important; }
+.model-detail-value { color: #000080 !important; }
+
+/* ── Resource Warning ───────────────────────────────────── */
+.resource-warning {
+  background: #ffffc0 !important;
+  border: 2px solid #808000 !important;
+  border-radius: 0 !important;
+  font-family: var(--retro-font-ui) !important;
+  font-size: 15px !important;
+  color: #404000 !important;
+  box-shadow: var(--retro-3d-raise) !important;
+}
+.resource-warning .dismiss-btn {
+  background: var(--retro-gray) !important;
+  box-shadow: var(--retro-3d-raise) !important;
+  border-radius: 0 !important; color: #000 !important;
+}
+
+/* ── RAG Panel Retro Overrides ──────────────────────────── */
+.rag-panel { border-bottom: 2px solid #808080 !important; }
+.pdf-dropzone {
+  background: #d0d0d0 !important;
+  border: 2px dashed #808080 !important;
+  border-radius: 0 !important;
+  font-family: var(--retro-font-ui) !important;
+  font-size: 15px !important;
+}
+.pdf-dropzone:hover, .pdf-dropzone.drag-over {
+  background: #c0c0ff !important; border-color: #000080 !important;
+}
+.pdf-upload-label {
+  background: var(--retro-gray) !important;
+  box-shadow: var(--retro-3d-raise) !important;
+  border: none !important; border-radius: 0 !important;
+  font-family: var(--retro-font-ui) !important;
+  font-size: 14px !important; color: #000 !important; padding: 2px 10px !important;
+}
+.pdf-upload-label:hover { background: var(--retro-gray) !important; color: #000 !important; }
+.pdf-badge {
+  background: #d0d8ff !important; border: 1px solid #000080 !important;
+  border-radius: 0 !important; box-shadow: var(--retro-3d-sink) !important;
+  font-family: var(--retro-font-ui) !important;
+}
+.pdf-badge-name { font-family: var(--retro-font-ui) !important; font-size: 14px !important; }
+.pdf-remove-btn {
+  background: var(--retro-gray) !important; box-shadow: var(--retro-3d-raise) !important;
+  border-radius: 0 !important; border: none !important; color: #000 !important;
+}
+.rag-mode-toggle { border: none !important; box-shadow: var(--retro-3d-sink) !important; border-radius: 0 !important; }
+.rag-toggle-btn {
+  background: var(--retro-gray) !important; border: none !important;
+  box-shadow: none !important; border-radius: 0 !important;
+  font-family: var(--retro-font-ui) !important; font-size: 14px !important; color: #000 !important;
+}
+.rag-toggle-btn.active {
+  background: var(--retro-blue) !important; color: #fff !important;
+  box-shadow: var(--retro-3d-sink) !important;
+}
+.rag-toggle-btn.active .icon-pdf, .rag-toggle-btn.active .icon-app-chat { filter: brightness(0) invert(1) !important; }
+.rag-active-indicator {
+  background: #c0ffc0 !important; border: 1px solid #008000 !important;
+  border-radius: 0 !important; box-shadow: var(--retro-3d-sink) !important;
+  font-family: var(--retro-font-ui) !important; font-size: 15px !important; color: #004000 !important;
+}
+.rag-progress-label { font-family: var(--retro-font-ui) !important; font-size: 14px !important; color: #000 !important; }
+.rag-sources {
+  background: rgba(0,0,50,0.6) !important; border-left: 3px solid #5555ff !important;
+  color: #aaaaff !important; border-radius: 0 !important;
+  font-family: var(--retro-font-mono) !important;
+}
+.rag-sources summary { color: #8888ff !important; }
+.rag-source-chunk { background: rgba(0,0,80,0.5) !important; border-radius: 0 !important; color: #ccccff !important; }
+.rag-source-page { color: #aaaaff !important; }
+
+/* ── Secondary Button ───────────────────────────────────── */
+.secondary-button {
+  background: var(--retro-gray) !important;
+  box-shadow: var(--retro-3d-raise) !important;
+  border: none !important; color: #000 !important;
+}
+
+/* ── CRT flicker on output ──────────────────────────────── */
+#output::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(rgba(0,255,65,0.02) 50%, transparent 50%);
+  background-size: 100% 4px;
+  pointer-events: none; border-radius: 0;
+  animation: crt-flicker 0.15s infinite;
+  opacity: 0.3;
+}
+#output { position: relative; overflow: auto; }
+
+@keyframes crt-flicker {
+  0% { opacity: 0.27; }
+  5% { opacity: 0.34; }
+  10% { opacity: 0.28; }
+  15% { opacity: 0.33; }
+  20% { opacity: 0.29; }
+  100% { opacity: 0.3; }
+}
